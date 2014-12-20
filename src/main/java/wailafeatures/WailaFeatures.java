@@ -4,15 +4,14 @@ import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.ModMetadata;
 import cpw.mods.fml.common.SidedProxy;
-import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.event.FMLPostInitializationEvent;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.event.*;
 import wailafeatures.config.ConfigHandler;
+import wailafeatures.feature.FeatureList;
 import wailafeatures.proxy.CommonProxy;
 import wailafeatures.reference.MetaData;
 import wailafeatures.reference.Reference;
 
-@Mod(modid = Reference.ID, name = Reference.NAME, version = Reference.VERSION_FULL, guiFactory = Reference.GUI_FACTORY, dependencies = "required-after:Waila")
+@Mod(modid = Reference.ID, name = Reference.NAME, version = Reference.VERSION_FULL, guiFactory = Reference.GUI_FACTORY, dependencies = "required-after:NotEnoughItems;required-after:Waila")
 public class WailaFeatures
 {
     @Mod.Instance(value = Reference.ID)
@@ -41,6 +40,12 @@ public class WailaFeatures
     @Mod.EventHandler
     public void postInit(FMLPostInitializationEvent event)
     {
+    }
+
+    @Mod.EventHandler
+    public void onServerLoad(FMLLoadCompleteEvent event)
+    {
+        FeatureList.registerFeatures();
     }
 
 }
