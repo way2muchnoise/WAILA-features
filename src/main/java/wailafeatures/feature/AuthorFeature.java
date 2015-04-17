@@ -10,7 +10,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
 import org.lwjgl.input.Keyboard;
 import wailafeatures.util.AuthorIdent;
 import wailafeatures.util.LogHelper;
@@ -30,6 +29,17 @@ public class AuthorFeature implements IFeature, IContainerTooltipHandler, IWaila
         ModuleRegistrar.instance().registerTailProvider((IWailaEntityProvider)this, Entity.class);
     }
 
+    private ITaggedList.ITipList addModAuthors(ItemStack itemStack, ITaggedList.ITipList currenttip)
+    {
+        if (itemStack != null && itemStack.getItem() != null)
+        {
+            String authors = AuthorIdent.nameFromObject(itemStack.getItem());
+            if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) && authors != null && !authors.equals(""))
+                currenttip.add("\u00a79\u00a7o" + TranslationHelper.translateToLocal("wailafeatures.author.madeBy") + " " + authors);
+        }
+        return currenttip;
+    }
+
     private List<String> addModAuthors(ItemStack itemStack, List<String> currenttip)
     {
         if (itemStack != null && itemStack.getItem() != null)
@@ -41,7 +51,7 @@ public class AuthorFeature implements IFeature, IContainerTooltipHandler, IWaila
         return currenttip;
     }
 
-    private List<String> addModAuthors(Entity entity, List<String> currenttip)
+    private ITaggedList.ITipList addModAuthors(Entity entity, ITaggedList.ITipList currenttip)
     {
         if (entity != null)
         {
@@ -77,28 +87,29 @@ public class AuthorFeature implements IFeature, IContainerTooltipHandler, IWaila
     }
 
     @Override
-    public List<String> getWailaHead(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config)
+    public ITaggedList.ITipList getWailaHead(ItemStack itemStack, ITaggedList.ITipList currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config)
     {
         return currenttip;
     }
 
     @Override
-    public List<String> getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config)
+    public ITaggedList.ITipList getWailaBody(ItemStack itemStack, ITaggedList.ITipList currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config)
     {
         return currenttip;
     }
 
     @Override
-    public List<String> getWailaTail(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config)
+    public ITaggedList.ITipList getWailaTail(ItemStack itemStack, ITaggedList.ITipList currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config)
     {
         return addModAuthors(itemStack, currenttip);
     }
 
     @Override
-    public NBTTagCompound getNBTData(TileEntity te, NBTTagCompound tag, World world, int x, int y, int z)
+    public NBTTagCompound getNBTData(TileEntity te, NBTTagCompound tag, IWailaDataAccessorServer accessor)
     {
         return tag;
     }
+
 
     @Override
     public Entity getWailaOverride(IWailaEntityAccessor accessor, IWailaConfigHandler config)
@@ -107,25 +118,25 @@ public class AuthorFeature implements IFeature, IContainerTooltipHandler, IWaila
     }
 
     @Override
-    public List<String> getWailaHead(Entity entity, List<String> currenttip, IWailaEntityAccessor accessor, IWailaConfigHandler config)
+    public ITaggedList.ITipList getWailaHead(Entity entity, ITaggedList.ITipList currenttip, IWailaEntityAccessor accessor, IWailaConfigHandler config)
     {
         return currenttip;
     }
 
     @Override
-    public List<String> getWailaBody(Entity entity, List<String> currenttip, IWailaEntityAccessor accessor, IWailaConfigHandler config)
+    public ITaggedList.ITipList getWailaBody(Entity entity, ITaggedList.ITipList currenttip, IWailaEntityAccessor accessor, IWailaConfigHandler config)
     {
         return currenttip;
     }
 
     @Override
-    public List<String> getWailaTail(Entity entity, List<String> currenttip, IWailaEntityAccessor accessor, IWailaConfigHandler config)
+    public ITaggedList.ITipList getWailaTail(Entity entity, ITaggedList.ITipList currenttip, IWailaEntityAccessor accessor, IWailaConfigHandler config)
     {
         return addModAuthors(entity, currenttip);
     }
 
     @Override
-    public NBTTagCompound getNBTData(Entity ent, NBTTagCompound tag)
+    public NBTTagCompound getNBTData(Entity ent, NBTTagCompound tag, IWailaEntityAccessorServer accessor)
     {
         return tag;
     }

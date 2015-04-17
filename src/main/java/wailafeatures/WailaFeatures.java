@@ -1,10 +1,10 @@
 package wailafeatures;
 
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.Mod;
-import cpw.mods.fml.common.ModMetadata;
-import cpw.mods.fml.common.SidedProxy;
-import cpw.mods.fml.common.event.*;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.ModMetadata;
+import net.minecraftforge.fml.common.SidedProxy;
+import net.minecraftforge.fml.common.event.*;
 import wailafeatures.config.ConfigHandler;
 import wailafeatures.feature.FeatureList;
 import wailafeatures.proxy.CommonProxy;
@@ -26,7 +26,6 @@ public class WailaFeatures
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event)
     {
-        INSTANCE = this;
         metadata = MetaData.init(metadata);
         ConfigHandler.init(event.getSuggestedConfigurationFile());
         FMLCommonHandler.instance().bus().register(new ConfigHandler());

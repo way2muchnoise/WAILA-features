@@ -1,7 +1,7 @@
 package wailafeatures.util;
 
-import cpw.mods.fml.common.Loader;
-import cpw.mods.fml.common.ModContainer;
+import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.common.ModContainer;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
