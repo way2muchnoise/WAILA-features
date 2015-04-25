@@ -45,7 +45,7 @@ public class WailaFeatures
     @Mod.EventHandler
     public void onServerLoad(FMLLoadCompleteEvent event)
     {
-        FeatureList.registerFeatures();
+        FeatureList.registerFeatures(event.getSide());
     }
 
 }

@@ -2,11 +2,13 @@ package wailafeatures.feature;
 
 import codechicken.nei.guihook.GuiContainerManager;
 import codechicken.nei.guihook.IContainerTooltipHandler;
+import cpw.mods.fml.relauncher.Side;
 import mcp.mobius.waila.api.*;
 import mcp.mobius.waila.api.impl.ModuleRegistrar;
 import net.minecraft.block.Block;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -21,7 +23,7 @@ import java.util.List;
 public class AuthorFeature implements IFeature, IContainerTooltipHandler, IWailaDataProvider, IWailaEntityProvider
 {
     @Override
-    public void registerFeature()
+    public void registerFeature(Side side)
     {
         LogHelper.debugInfo("Registering AuthorInfo");
         AuthorIdent.init();
@@ -95,7 +97,7 @@ public class AuthorFeature implements IFeature, IContainerTooltipHandler, IWaila
     }
 
     @Override
-    public NBTTagCompound getNBTData(TileEntity te, NBTTagCompound tag, World world, int x, int y, int z)
+    public NBTTagCompound getNBTData(EntityPlayerMP player, TileEntity te, NBTTagCompound tag, World world, int x, int y, int z)
     {
         return tag;
     }
@@ -125,7 +127,7 @@ public class AuthorFeature implements IFeature, IContainerTooltipHandler, IWaila
     }
 
     @Override
-    public NBTTagCompound getNBTData(Entity ent, NBTTagCompound tag)
+    public NBTTagCompound getNBTData(EntityPlayerMP player, Entity ent, NBTTagCompound tag, World world)
     {
         return tag;
     }
