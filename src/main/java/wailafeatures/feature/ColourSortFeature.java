@@ -99,12 +99,12 @@ public class ColourSortFeature implements IFeature, SearchField.ISearchProvider
         {
             ResourceLocation resourceLocation;
 
-            if (name.contains(":")) {
+            if (name.contains(":"))
+            {
                 String[] split = name.split(":");
                 resourceLocation = new ResourceLocation(split[0] + ":textures/blocks/" + split[1] + ".png");
-            } else {
+            } else
                 resourceLocation = new ResourceLocation("textures/blocks/" + name + ".png");
-            }
 
             try
             {
@@ -131,12 +131,12 @@ public class ColourSortFeature implements IFeature, SearchField.ISearchProvider
         ResourceLocation resourceLocation;
         int colour = 0;
 
-        if (name.contains(":")) {
+        if (name.contains(":"))
+        {
             String[] split = name.split(":");
             resourceLocation = new ResourceLocation(split[0] + ":textures/items/" + split[1] + ".png");
-        } else {
+        } else
             resourceLocation = new ResourceLocation("textures/items/" + name + ".png");
-        }
 
         try
         {
@@ -164,11 +164,13 @@ public class ColourSortFeature implements IFeature, SearchField.ISearchProvider
             }
         }
 
+        colourCount.remove(0);
+
         int dom = 0;
         int max = 0;
         for (Map.Entry<Integer, Integer> entry : colourCount.entrySet())
         {
-            if (entry.getKey() != 0 && entry.getValue() > max)
+            if (entry.getValue() > max)
             {
                 dom = entry.getKey();
                 max = entry.getValue();
@@ -201,19 +203,23 @@ public class ColourSortFeature implements IFeature, SearchField.ISearchProvider
     public enum Colour
     {
         white(new int[]{255, 255, 255}),
-        pink(new int[]{255, 192, 203}),
-        brown(new int[]{139 ,69, 19}),
-        orange(new int[]{255, 165, 0}),
-        magenta(new int[]{255, 0, 255}),
-        purple(new int[]{128, 0, 128}),
-        gray(new int[]{128, 128, 128}),
-        lightGray(new int[]{192, 192, 192}),
+        black(new int[]{0, 0, 0}),
         green(new int[]{0, 128, 0}),
         lime(new int[]{0, 255, 0}),
         red(new int[]{255, 0, 0}),
+        maroon(new int[]{128, 0, 0}),
+        navy(new int[]{0, 0, 128}),
         blue(new int[]{0, 0, 255}),
+        magenta(new int[]{255, 0, 255}),
+        teal(new int[]{0, 128, 128}),
+        orange(new int[]{255, 165, 0}),
         yellow(new int[]{255, 255, 0}),
-        black(new int[]{0, 0, 0});
+        purple(new int[]{128, 0, 128}),
+        cyan(new int[]{0, 255, 255}),
+        pink(new int[]{255, 192, 203}),
+        brown(new int[]{139 ,69, 19}),
+        gray(new int[]{128, 128, 128}),
+        lightGray(new int[]{192, 192, 192});
 
         private Set<String> aliases;
         private int[] rgb;
@@ -238,18 +244,19 @@ public class ColourSortFeature implements IFeature, SearchField.ISearchProvider
 
         public static Colour find(int intColour)
         {
-            for (int i = 0; i < 50; i+=2)
+            int i = 0;
+            while (true)
             {
                 for (Colour colour : values())
                 {
-                    double d = Math.sqrt(Math.pow((Colours.getRed(intColour) - colour.rgb[0] / 255F), 2) + Math.pow((Colours.getGreen(intColour) - colour.rgb[1] / 255F), 2) + Math.pow((Colours.getBlue(intColour) - colour.rgb[1] / 255F), 2));
+                    double d = Math.sqrt(Math.pow((Colours.getRed(intColour) - colour.rgb[0] / 255F), 2) + Math.pow((Colours.getGreen(intColour) - colour.rgb[1] / 255F), 2) + Math.pow((Colours.getBlue(intColour) - colour.rgb[2] / 255F), 2));
                     if (d < i / 255F)
                     {
                         return colour;
                     }
                 }
+                i+=1;
             }
-            return null;
         }
     }
 }
