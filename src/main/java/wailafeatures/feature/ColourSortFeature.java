@@ -14,6 +14,7 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
+import wailafeatures.config.Settings;
 import wailafeatures.reference.Colours;
 import wailafeatures.util.LogHelper;
 
@@ -55,7 +56,7 @@ public class ColourSortFeature implements IFeature, SearchField.ISearchProvider
     @Override
     public boolean isPrimary()
     {
-        return true;
+        return Settings.debugMode;
     }
 
     @Override
@@ -77,7 +78,7 @@ public class ColourSortFeature implements IFeature, SearchField.ISearchProvider
             if (stacks == null)
                 stacks = new LinkedList<ItemStack>();
             stacks.add(itemStack);
-            LogHelper.info("Mapped " + itemStack.getDisplayName() + " as " + colour.name());
+            LogHelper.debug("Mapped " + itemStack.getDisplayName() + " as " + colour.name());
             this.colourMap.put(colour, stacks);
         }
         this.checkedItems.add(itemStack);
