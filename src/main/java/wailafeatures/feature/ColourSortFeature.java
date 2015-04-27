@@ -17,6 +17,7 @@ import net.minecraft.util.ResourceLocation;
 import wailafeatures.config.Settings;
 import wailafeatures.reference.Colours;
 import wailafeatures.util.LogHelper;
+import wailafeatures.util.Tuple;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -27,12 +28,14 @@ public class ColourSortFeature implements IFeature, SearchField.ISearchProvider
 {
     private Map<Colour, List<ItemStack>> colourMap;
     private List<ItemStack> checkedItems;
+    private Side side;
 
     @Override
     public void registerFeature(Side side)
     {
         LogHelper.debugInfo("Registering ColourFilter");
         API.addSearchProvider(this);
+        this.side = side;
         if (side == Side.CLIENT)
             ((IReloadableResourceManager)Minecraft.getMinecraft().getResourceManager()).registerReloadListener(new TextureReloadListener());
     }
@@ -71,14 +74,14 @@ public class ColourSortFeature implements IFeature, SearchField.ISearchProvider
         if (itemStack.getItem() instanceof ItemBlock)
             colour = calcColour(Block.getBlockFromItem(itemStack.getItem()), itemStack.getItemDamage());
         else
-            colour = calcColour(itemStack.getItem(), itemStack.getItemDamage());
+            colour = calcColour(itemStack, itemStack.getItem(), itemStack.getItemDamage());
         if (colour != null)
         {
             List<ItemStack> stacks = this.colourMap.get(colour);
             if (stacks == null)
                 stacks = new LinkedList<ItemStack>();
             stacks.add(itemStack);
-            LogHelper.debug("Mapped " + itemStack.getDisplayName() + " as " + colour.name());
+            LogHelper.debugInfo("Mapped " + itemStack.getDisplayName() + " as " + colour.name());
             this.colourMap.put(colour, stacks);
         }
         this.checkedItems.add(itemStack);
@@ -122,31 +125,45 @@ public class ColourSortFeature implements IFeature, SearchField.ISearchProvider
         return Colour.find(colours.size() > 1 ? Colours.blend(colours.toArray(new Integer[colours.size()])) : colours.get(0));
     }
 
-    private Colour calcColour(Item item, int damage)
+    private Colour calcColour(ItemStack itemStack, Item item, int damage)
     {
-        IIcon icon = item.getIconFromDamage(damage);
-        if (icon == null)
-            return null;
-
-        String name = icon.getIconName();
         ResourceLocation resourceLocation;
-        int colour = 0;
+        List<Integer> colours = new LinkedList<Integer>();
 
-        if (name.contains(":"))
+        for (int i = 0; item.getRenderPasses(damage) > i; i++)
         {
-            String[] split = name.split(":");
-            resourceLocation = new ResourceLocation(split[0] + ":textures/items/" + split[1] + ".png");
-        } else
-            resourceLocation = new ResourceLocation("textures/items/" + name + ".png");
+            IIcon icon = item.getIconFromDamage(damage);
+            if (icon == null) continue;
 
-        try
-        {
-            BufferedImage bufferedImage = ImageIO.read(Minecraft.getMinecraft().getResourceManager().getResource(resourceLocation).getInputStream());
+            if (ColourSortFeature.this.side == Side.CLIENT)
+            {
+                int colour = item.getColorFromItemStack(itemStack, i);
+                if (colour != 16777215)
+                {
+                    colours.add(colour);
+                    break;
+                }
+            }
 
-            colour = getIntColour(bufferedImage);
-        } catch (IOException ignore) {}
+            String name = icon.getIconName();
 
-        return Colour.find(colour);
+            if (name.contains(":"))
+            {
+                String[] split = name.split(":");
+                resourceLocation = new ResourceLocation(split[0] + ":textures/items/" + split[1] + ".png");
+            } else
+                resourceLocation = new ResourceLocation("textures/items/" + name + ".png");
+
+            try
+            {
+                BufferedImage bufferedImage = ImageIO.read(Minecraft.getMinecraft().getResourceManager().getResource(resourceLocation).getInputStream());
+
+                colours.add(getIntColour(bufferedImage));
+            } catch (IOException ignore) {}
+        }
+
+        if (colours.size() == 0) return Colour.black;
+        return Colour.find(colours.size() > 1 ? Colours.blend(colours.toArray(new Integer[colours.size()])) : colours.get(0));
     }
 
     private int getIntColour(BufferedImage image)
@@ -167,14 +184,45 @@ public class ColourSortFeature implements IFeature, SearchField.ISearchProvider
 
         colourCount.remove(0);
 
-        int dom = 0;
-        int max = 0;
+        List<Tuple<Integer, Integer>> coloursFinal = new LinkedList<Tuple<Integer, Integer>>();
+
         for (Map.Entry<Integer, Integer> entry : colourCount.entrySet())
         {
-            if (entry.getValue() > max)
+            if (coloursFinal.size() == 0)
             {
-                dom = entry.getKey();
-                max = entry.getValue();
+                Tuple<Integer, Integer> tuple = new Tuple<Integer, Integer>(entry);
+                coloursFinal.add(tuple);
+            }
+            else
+            {
+                Tuple<Integer, Integer> tuple = null;
+                for (Iterator<Tuple<Integer, Integer>> itr = coloursFinal.iterator(); itr.hasNext(); )
+                {
+                    tuple = itr.next();
+                    double d = Math.sqrt(Math.pow((Colours.getRed(tuple.getFirst()) - Colours.getRed(entry.getKey())), 2) + Math.pow((Colours.getGreen(tuple.getFirst()) - Colours.getGreen(entry.getKey())), 2) + Math.pow((Colours.getBlue(tuple.getFirst()) - Colours.getBlue(entry.getKey())), 2));
+                    if (d < 25/255F)
+                    {
+                        itr.remove();
+                        tuple.setFirst(Colours.blend(tuple.getFirst(), entry.getKey()));
+                        tuple.setSecond(tuple.getSecond() + entry.getValue());
+                        break;
+                    }
+                    tuple = null;
+                }
+                if (tuple == null)
+                    tuple = new Tuple<Integer, Integer>(entry);
+                coloursFinal.add(tuple);
+            }
+        }
+
+        int dom = 0;
+        int max = 0;
+        for (Tuple<Integer, Integer> entry : coloursFinal)
+        {
+            if (entry.getSecond() > max)
+            {
+                dom = entry.getFirst();
+                max = entry.getSecond();
             }
         }
 

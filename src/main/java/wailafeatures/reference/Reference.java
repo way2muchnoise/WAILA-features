@@ -13,7 +13,7 @@ public class Reference
     public static final String V_MINOR = "@MINOR@";
     public static final String V_REVIS = "@REVIS@";
     public static final String VERSION_FULL = V_MAJOR + "." + V_MINOR + "." + V_REVIS;
-    public static final String GUI_FACTORY = "";
+    public static final String GUI_FACTORY = "wailafeatures.gui.ModGuiFactory";
     public static final String COMMON_PROXY = "wailafeatures.proxy.CommonProxy";
     public static final String CLIENT_PROXY = "wailafeatures.proxy.ClientProxy";
 }
