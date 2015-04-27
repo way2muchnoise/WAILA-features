@@ -261,7 +261,7 @@ public class ColourSortFeature implements IFeature, SearchField.ISearchProvider
         blue(new int[]{0, 0, 255}),
         magenta(new int[]{255, 0, 255}),
         teal(new int[]{0, 128, 128}),
-        orange(new int[]{255, 165, 0}),
+        orange(new int[]{255, 140, 0}),
         yellow(new int[]{255, 255, 0}),
         purple(new int[]{128, 0, 128}),
         cyan(new int[]{0, 255, 255}),
