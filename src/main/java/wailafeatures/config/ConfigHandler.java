@@ -37,6 +37,7 @@ public class ConfigHandler
     private static void loadConfig()
     {
         Settings.debugMode = config.getBoolean(TranslationHelper.translateToLocal("wailafeatures.config.debug.title"), Configuration.CATEGORY_GENERAL, false, TranslationHelper.translateToLocal("wailafeatures.config.debug.description"));
+        Settings.fuzzyColourMode = config.getBoolean(TranslationHelper.translateToLocal("wailafeatures.config.fuzzyColour.title"), Configuration.CATEGORY_GENERAL, true, TranslationHelper.translateToLocal("wailafeatures.config.fuzzyColour.description"));
         if (config.hasChanged())
         {
             config.save();

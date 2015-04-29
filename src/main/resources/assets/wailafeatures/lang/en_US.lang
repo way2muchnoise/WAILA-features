@@ -1,4 +1,7 @@
 wailafeatures.config.debug.title=Debug Mode
 wailafeatures.config.debug.description=Run the mod in debug mode
 
+wailafeatures.config.fuzzyColour.title=Fuzzy Colour Mode
+wailafeatures.config.fuzzyColour.description=Run colour search with less specific values
+
 wailafeatures.author.madeBy=Made by

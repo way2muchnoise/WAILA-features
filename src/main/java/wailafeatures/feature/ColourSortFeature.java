@@ -65,7 +65,7 @@ public class ColourSortFeature implements IFeature, SearchField.ISearchProvider
     @Override
     public ItemFilter getFilter(String searchText)
     {
-        return new ColourFilter(searchText);
+        return Settings.fuzzyColourMode ? new FuzzyColourFilter(searchText) : new ColourFilter(searchText);
     }
 
     public void checkItem(ItemStack itemStack)
@@ -246,6 +246,56 @@ public class ColourSortFeature implements IFeature, SearchField.ISearchProvider
                 ColourSortFeature.this.checkItem(itemStack);
             List<ItemStack> list = ColourSortFeature.this.colourMap.get(colour);
             return list != null && list.contains(itemStack);
+        }
+    }
+
+    public class FuzzyColourFilter extends ColourFilter
+    {
+        private FuzzyColour fuzzyColour;
+
+        public FuzzyColourFilter(String searchText)
+        {
+            super(searchText);
+            this.fuzzyColour = FuzzyColour.find(searchText);
+        }
+
+        @Override
+        public boolean matches(ItemStack itemStack)
+        {
+            boolean parent = super.matches(itemStack);
+            if (fuzzyColour == null) return parent;
+            if (!ColourSortFeature.this.checkedItems.contains(itemStack))
+                ColourSortFeature.this.checkItem(itemStack);
+            List<ItemStack> list = new LinkedList<ItemStack>();
+            for (Colour colour : fuzzyColour.colours)
+                list.addAll(ColourSortFeature.this.colourMap.get(colour));
+            return list.contains(itemStack);
+        }
+    }
+
+    public enum FuzzyColour
+    {
+        green(Colour.green, Colour.lime),
+        gray(Colour.gray, Colour.lightGray),
+        red(Colour.red, Colour.maroon),
+        purple(Colour.purple, Colour.magenta),
+        blue(Colour.blue, Colour.navy, Colour.teal, Colour.teal);
+
+        public Colour[] colours;
+
+        FuzzyColour(Colour... colours)
+        {
+            this.colours = colours;
+        }
+
+        public static FuzzyColour find(String value)
+        {
+            for (FuzzyColour colour : values())
+            {
+                if (colour.name().equalsIgnoreCase(value))
+                    return colour;
+            }
+            return null;
         }
     }
 
