@@ -268,7 +268,8 @@ public class ColourSortFeature implements IFeature, SearchField.ISearchProvider
                 ColourSortFeature.this.checkItem(itemStack);
             List<ItemStack> list = new LinkedList<ItemStack>();
             for (Colour colour : fuzzyColour.colours)
-                list.addAll(ColourSortFeature.this.colourMap.get(colour));
+                if (ColourSortFeature.this.colourMap.containsKey(colour))
+                    list.addAll(ColourSortFeature.this.colourMap.get(colour));
             return list.contains(itemStack);
         }
     }
