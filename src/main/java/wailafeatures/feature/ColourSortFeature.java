@@ -65,6 +65,13 @@ public class ColourSortFeature implements IFeature, SearchField.ISearchProvider
     @Override
     public ItemFilter getFilter(String searchText)
     {
+        if (Settings.colourPrefix)
+        {
+            if (searchText.startsWith("@colour:"))
+                searchText = searchText.substring(8);
+            else
+                return null;
+        }
         return Settings.fuzzyColourMode ? new FuzzyColourFilter(searchText) : new ColourFilter(searchText);
     }
 
