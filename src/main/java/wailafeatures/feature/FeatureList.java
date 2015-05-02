@@ -5,7 +5,8 @@ import cpw.mods.fml.relauncher.Side;
 public enum FeatureList
 {
     author(new AuthorFeature()),
-    colourSort(new ColourSortFeature());
+    colourSort(new ColourSortFeature()),
+    materialSort(new MaterialSortFeature());
 
     private IFeature feature;
 
