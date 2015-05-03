@@ -26,7 +26,6 @@ public class WailaFeatures
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event)
     {
-        INSTANCE = this;
         metadata = MetaData.init(metadata);
         ConfigHandler.init(event.getSuggestedConfigurationFile());
         FMLCommonHandler.instance().bus().register(new ConfigHandler());
