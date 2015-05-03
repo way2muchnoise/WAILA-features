@@ -8,6 +8,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import wailafeatures.config.Settings;
 import wailafeatures.util.LogHelper;
 
 public class MaterialSortFeature implements IFeature, SearchField.ISearchProvider
@@ -28,6 +29,11 @@ public class MaterialSortFeature implements IFeature, SearchField.ISearchProvide
     @Override
     public ItemFilter getFilter(String searchText)
     {
+        if (Settings.colourPrefix)
+            if (searchText.startsWith("@material:"))
+                searchText = searchText.substring(10);
+            else
+                return null;
         return new MaterialFilter(searchText);
     }
 
