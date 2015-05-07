@@ -287,7 +287,7 @@ public class ColourSortFeature implements IFeature, SearchField.ISearchProvider
         gray(Colour.gray, Colour.lightGray),
         red(Colour.red, Colour.maroon),
         purple(Colour.purple, Colour.magenta),
-        blue(Colour.blue, Colour.navy, Colour.teal, Colour.teal);
+        blue(Colour.blue, Colour.navy, Colour.teal);
 
         public Colour[] colours;
 
