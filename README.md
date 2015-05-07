@@ -6,4 +6,63 @@ Adds some extra features to WAILA. Posts requests on issue tracker.
 Hold shift to see the author(s) of the mod. Works in an inventory as well in the WAILA tooltip.
 
 ### Colour NEI filter
-Search for blocks by there colour. (Very unstable for now)
+Search for blocks and items by there colour.
+
+#####Colour (part of Fuzzy)
+* white
+* black
+* green
+* lime (green)
+* red
+* maroon (red)
+* navy (blue)
+* blue
+* magenta (purple)
+* teal (blue)
+* orange
+* yellow
+* purple
+* cyan
+* pink
+* brown
+* gray
+* lightGray (gray)
+
+### Material NEI filter
+Search for blocks by there material.
+
+####Materials
+* air
+* grass
+* ground
+* wood
+* rock
+* iron
+* anvil
+* water
+* lava
+* leaves
+* plants
+* vine
+* sponge
+* cloth
+* fire
+* sand
+* circuits
+* carpet
+* glass
+* redstoneLight
+* tnt
+* coral
+* ice
+* packedIce
+* snow
+* craftedSnow
+* cactus
+* clay
+* gourd
+* dragonEgg
+* portal
+* cake
+* web
+* piston
