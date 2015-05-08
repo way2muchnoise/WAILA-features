@@ -6,7 +6,7 @@ Adds some extra features to WAILA. Posts requests on issue tracker.
 Hold shift to see the author(s) of the mod. Works in an inventory as well in the WAILA tooltip.
 
 ### Colour NEI filter
-Search for blocks and items by there colour.
+Search for blocks and items by their colour.
 
 #####Colour (part of Fuzzy)
 * white
@@ -29,7 +29,7 @@ Search for blocks and items by there colour.
 * lightGray (gray)
 
 ### Material NEI filter
-Search for blocks by there material.
+Search for blocks by their material.
 
 ####Materials
 * air
