@@ -1,0 +1,13 @@
+wailafeatures.config.debug.title=Debug Modus
+wailafeatures.config.debug.description=Gebruik de mod in debug modus
+
+wailafeatures.config.fuzzyColour.title=Simpele Kleuren Modus
+wailafeatures.config.fuzzyColour.description=Simpelere kleuren voor het zoeken in NEI
+
+wailafeatures.config.colourPrefix.title=Activeer de kleur prefix
+wailafeatures.config.colourPrefix.description=Plaats "@colour:" voor de kleur om the zoeken in NEI
+
+wailafeatures.config.materialPrefix.title=Activeer de materiaal prefix
+wailafeatures.config.materialPrefix.description=Plaats "@material:" voor de kleur om the zoeken in NEI
+
+wailafeatures.author.madeBy=Gemaakt door
