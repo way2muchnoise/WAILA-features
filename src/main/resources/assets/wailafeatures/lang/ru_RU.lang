@@ -1,4 +1,13 @@
 wailafeatures.config.debug.title=Режим отладки
 wailafeatures.config.debug.description=Запускает модификацию в режиме отладки
 
+wailafeatures.config.fuzzyColour.title=Fuzzy Colour Mode
+wailafeatures.config.fuzzyColour.description=Run colour search with less specific values
+
+wailafeatures.config.colourPrefix.title=Activate the colour prefix
+wailafeatures.config.colourPrefix.description=Prepend the search with "@colour:" to enable the colour search
+
+wailafeatures.config.materialPrefix.title=Activate the material prefix
+wailafeatures.config.materialPrefix.description=Prepend the search with "@material:" to enable the material search
+
 wailafeatures.author.madeBy=Добавлен в игру:
