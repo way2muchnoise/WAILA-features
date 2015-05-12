@@ -97,6 +97,7 @@ public class ColourSortFeature implements IFeature, SearchField.ISearchProvider
     private Colour calcColour(Block block, int damage)
     {
         Set<String> iconNames = new LinkedHashSet<String>();
+        // Get all block sides
         for (int i = 0; i < 6; i++)
         {
             IIcon icon = block.getIcon(i, damage);
@@ -137,14 +138,20 @@ public class ColourSortFeature implements IFeature, SearchField.ISearchProvider
         ResourceLocation resourceLocation;
         List<Integer> colours = new LinkedList<Integer>();
 
+        /*
+        Get all item Icons based on the render pass
+        when a pass has no icon skip it
+         */
         for (int i = 0; item.getRenderPasses(damage) > i; i++)
         {
             IIcon icon = item.getIconFromDamage(damage);
             if (icon == null) continue;
 
+            // On the client side check the render colour of the itemstack
             if (ColourSortFeature.this.side == Side.CLIENT)
             {
                 int colour = item.getColorFromItemStack(itemStack, i);
+                // When the render colour is not the default take that as could and don't do pixel check
                 if (colour != 16777215)
                 {
                     colours.add(colour);
@@ -177,6 +184,10 @@ public class ColourSortFeature implements IFeature, SearchField.ISearchProvider
     {
         Map<Integer, Integer> colourCount = new HashMap<Integer, Integer>();
 
+        /*
+        Gather a map where the keys are the colours of pixels
+        and the value is the amount of times they occur
+         */
         for (int w = 0; w < image.getWidth(); w++)
         {
             for (int h = 0; h < image.getHeight(); h++)
@@ -189,10 +200,19 @@ public class ColourSortFeature implements IFeature, SearchField.ISearchProvider
             }
         }
 
+        /*
+        Remove the transparent colour
+        This is needed for items since they have lots of transparent pixels
+         */
         colourCount.remove(0);
 
         List<Tuple<Integer, Integer>> coloursFinal = new LinkedList<Tuple<Integer, Integer>>();
 
+        /*
+        Create a list of Tuples where the first value of the tuple is the colour and the second is the occurrence
+        When 2 int colours are close together mix the key value with the tuple's first object
+        And add the occurrences to the counter in the second object of the tuple
+         */
         for (Map.Entry<Integer, Integer> entry : colourCount.entrySet())
         {
             if (coloursFinal.size() == 0)
@@ -222,6 +242,9 @@ public class ColourSortFeature implements IFeature, SearchField.ISearchProvider
             }
         }
 
+        /*
+        Find the most dominant colour
+         */
         int dom = 0;
         int max = 0;
         for (Tuple<Integer, Integer> entry : coloursFinal)
