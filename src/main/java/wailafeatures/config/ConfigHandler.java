@@ -29,9 +29,7 @@ public class ConfigHandler
     public void onConfigChangedEvent(ConfigChangedEvent.OnConfigChangedEvent event)
     {
         if (event.modID.equalsIgnoreCase(Reference.ID))
-        {
             loadConfig();
-        }
     }
 
     private static void loadConfig()
@@ -41,9 +39,7 @@ public class ConfigHandler
         Settings.colourPrefix = config.getBoolean(TranslationHelper.translateToLocal("wailafeatures.config.colourPrefix.title"), Configuration.CATEGORY_GENERAL, true, TranslationHelper.translateToLocal("wailafeatures.config.colourPrefix.description"));
         Settings.materialPrefix = config.getBoolean(TranslationHelper.translateToLocal("wailafeatures.config.materialPrefix.title"), Configuration.CATEGORY_GENERAL, true, TranslationHelper.translateToLocal("wailafeatures.config.materialPrefix.description"));
         if (config.hasChanged())
-        {
             config.save();
-        }
     }
 
     @SuppressWarnings("unchecked")
