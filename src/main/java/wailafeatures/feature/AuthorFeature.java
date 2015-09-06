@@ -36,7 +36,7 @@ public class AuthorFeature implements IFeature, IContainerTooltipHandler, IWaila
     {
         if (itemStack != null && itemStack.getItem() != null)
         {
-            String authors = AuthorIdent.nameFromObject(itemStack.getItem());
+            String authors = AuthorIdent.nameFromItem(itemStack.getItem());
             if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) && authors != null && !authors.equals(""))
                 currenttip.add("\u00a79\u00a7o" + TranslationHelper.translateToLocal("wailafeatures.author.madeBy") + " " + authors);
         }
@@ -47,7 +47,7 @@ public class AuthorFeature implements IFeature, IContainerTooltipHandler, IWaila
     {
         if (entity != null)
         {
-            String authors = AuthorIdent.nameFromObject(entity);
+            String authors = AuthorIdent.nameFromEntity(entity);
             if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) && authors != null && !authors.equals(""))
                 currenttip.add("\u00a79\u00a7o" + TranslationHelper.translateToLocal("wailafeatures.author.madeBy") + " " + authors);
         }
