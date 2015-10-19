@@ -29,6 +29,7 @@ public class MaterialSortFeature implements IFeature, SearchField.ISearchProvide
     @Override
     public ItemFilter getFilter(String searchText)
     {
+        if (!Settings.materialSearch) return null;
         if (Settings.materialPrefix)
             if (searchText.startsWith("@material:"))
                 searchText = searchText.substring(10);

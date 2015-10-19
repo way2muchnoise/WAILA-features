@@ -65,6 +65,7 @@ public class ColourSortFeature implements IFeature, SearchField.ISearchProvider
     @Override
     public ItemFilter getFilter(String searchText)
     {
+        if (!Settings.colourSearch) return null;
         if (Settings.colourPrefix)
         {
             if (searchText.startsWith("@colour:"))

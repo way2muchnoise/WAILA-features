@@ -14,6 +14,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import org.lwjgl.input.Keyboard;
+import wailafeatures.config.Settings;
 import wailafeatures.util.AuthorIdent;
 import wailafeatures.util.LogHelper;
 import wailafeatures.util.TranslationHelper;
@@ -34,7 +35,7 @@ public class AuthorFeature implements IFeature, IContainerTooltipHandler, IWaila
 
     private List<String> addModAuthors(ItemStack itemStack, List<String> currenttip)
     {
-        if (itemStack != null && itemStack.getItem() != null)
+        if (Settings.authorIdent && itemStack != null && itemStack.getItem() != null)
         {
             String authors = AuthorIdent.nameFromItem(itemStack.getItem());
             if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) && authors != null && !authors.equals(""))
@@ -45,7 +46,7 @@ public class AuthorFeature implements IFeature, IContainerTooltipHandler, IWaila
 
     private List<String> addModAuthors(Entity entity, List<String> currenttip)
     {
-        if (entity != null)
+        if (Settings.authorIdent && entity != null)
         {
             String authors = AuthorIdent.nameFromEntity(entity);
             if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) && authors != null && !authors.equals(""))

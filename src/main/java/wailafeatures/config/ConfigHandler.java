@@ -38,6 +38,9 @@ public class ConfigHandler
         Settings.fuzzyColourMode = config.getBoolean(TranslationHelper.translateToLocal("wailafeatures.config.fuzzyColour.title"), Configuration.CATEGORY_GENERAL, true, TranslationHelper.translateToLocal("wailafeatures.config.fuzzyColour.description"));
         Settings.colourPrefix = config.getBoolean(TranslationHelper.translateToLocal("wailafeatures.config.colourPrefix.title"), Configuration.CATEGORY_GENERAL, true, TranslationHelper.translateToLocal("wailafeatures.config.colourPrefix.description"));
         Settings.materialPrefix = config.getBoolean(TranslationHelper.translateToLocal("wailafeatures.config.materialPrefix.title"), Configuration.CATEGORY_GENERAL, true, TranslationHelper.translateToLocal("wailafeatures.config.materialPrefix.description"));
+        Settings.authorIdent = config.getBoolean(TranslationHelper.translateToLocal("wailafeatures.config.authorIdent.title"), Configuration.CATEGORY_GENERAL, true, TranslationHelper.translateToLocal("wailafeatures.config.authorIdent.description"));
+        Settings.colourSearch = config.getBoolean(TranslationHelper.translateToLocal("wailafeatures.config.colourSearch.title"), Configuration.CATEGORY_GENERAL, true, TranslationHelper.translateToLocal("wailafeatures.config.colourSearch.description"));
+        Settings.materialSearch = config.getBoolean(TranslationHelper.translateToLocal("wailafeatures.config.materialSearch.title"), Configuration.CATEGORY_GENERAL, true, TranslationHelper.translateToLocal("wailafeatures.config.materialSearch.description"));
         if (config.hasChanged())
             config.save();
     }
