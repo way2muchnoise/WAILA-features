@@ -2,11 +2,13 @@ WAILA-features
 ==============
 Adds some extra features to WAILA. Posts requests on issue tracker.
 
+Each feature can be disable by config.
+
 ### Author listing
 Hold shift to see the author(s) of the mod. Works in an inventory as well in the WAILA tooltip.
 
 ### Colour NEI filter
-Search for blocks and items by their colour.
+Search for blocks and items by their colour. Can be set to have a prefix.
 
 #####Colour (part of Fuzzy)
 * white
@@ -29,7 +31,7 @@ Search for blocks and items by their colour.
 * lightGray (gray)
 
 ### Material NEI filter
-Search for blocks by their material.
+Search for blocks by their material. Can be set to have a prefix.
 
 ####Materials
 * air
