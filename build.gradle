@@ -1,33 +1,17 @@
 buildscript {
     repositories {
-        mavenCentral()
+        jcenter()
         maven {
             name = "forge"
             url = "http://files.minecraftforge.net/maven"
         }
-        maven {
-            // Add maven repo for SpecialSource
-            name = "sonatype"
-            url = "https://oss.sonatype.org/content/repositories/snapshots/"
-        }
     }
     dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT'
+        classpath 'net.minecraftforge.gradle:ForgeGradle:2.1-SNAPSHOT'
     }
 }
-
-apply plugin: 'forge'
+apply plugin: 'net.minecraftforge.gradle.forge'
 apply plugin: 'idea'
-apply plugin: 'maven'
-apply plugin: 'maven-publish'
-
-ext.buildProps = file "build.properties"
-
-buildProps.withReader {
-    def prop = new Properties()
-    prop.load(it)
-    ext.config = new ConfigSlurper().parse prop
-}
 
 repositories {
     maven {
@@ -38,17 +22,23 @@ repositories {
         name 'CB Repo'
         url "http://chickenbones.net/maven"
     }
-    maven { // The repo from which to get waila
-        name "Mobius Repo"
+    maven {
+        name "Waila Mobius Repo"
         url "http://mobiusstrip.eu/maven"
     }
+    ivy {
+        name 'FMP'
+        artifactPattern "http://files.minecraftforge.net/[module]/[module]-dev-[revision].[ext]"
+    }
+
 }
 
 dependencies {
-    compile group: 'codechicken', name: 'NotEnoughItems', version: "${config.version.minecraft}-${config.version.nei}", ext: 'jar', classifier: "dev"
-    compile group: 'codechicken', name: 'CodeChickenCore', version: "${config.version.minecraft}-${config.version.cccore}", ext: 'jar', classifier: "dev"
-    compile group: 'codechicken', name: 'CodeChickenLib', version: "${config.version.minecraft}-${config.version.cclib}", ext: 'jar', classifier: "dev"
-    compile group: 'mcp.mobius.waila', name: 'Waila', version: "${config.version.waila}_${config.version.minecraft}"
+    compile "codechicken:NotEnoughItems:${version_minecraft}-${version_nei}:dev"
+    compile "codechicken:CodeChickenLib:${version_minecraft}-${version_cclib}:dev"
+    compile "codechicken:CodeChickenCore:${version_minecraft}-${version_cccore}:dev"
+    compile "mcp.mobius.waila:Waila:${waila_version}_${version_minecraft}:dev"
+
     compile fileTree(dir: 'lib', include: '*.jar')
 }
 
@@ -56,58 +46,51 @@ group = "wailafeatures"
 archivesBaseName = "WAILA-features"
 
 minecraft {
-    version = "${config.version.minecraft}-${config.version.forge}"
+    version = "${version_minecraft}-${version_forge}"
+    mappings = "${version_mappings}"
+    runDir = "run"
+
+    replace "@MAJOR@", version_major
+    replace "@MINOR@", version_minor
+    replace "@REVIS@", version_revis
 
     replaceIn "reference/Reference.java"
-    replace "@MAJOR@", config.version.mod.major
-    replace "@MINOR@", config.version.mod.minor
-    replace "@REVIS@", config.version.mod.revis
+    replaceIn "package-info.java"
 }
 
 processResources {
-    from 'build.properties'
-}
+    inputs.property "version", project.version
+    inputs.property "mcversion", project.minecraft.version
 
-allprojects {
-    version = "${config.version.minecraft}-${config.version.mod.major}.${config.version.mod.minor}.${config.version.mod.revis}"
-
-    if (System.getenv("BUILD_NUMBER") != null) {
-        version += ".${System.getenv("BUILD_NUMBER")}"
+    from(sourceSets.main.resources.srcDirs) {
+        include '**/*.info'
+        expand 'version':"${version_major}.${version_minor}.${version_revis}", 'mcversion':version_minecraft
     }
 
-    jar {
-        dependsOn ":copyBuildXml"
-        destinationDir = file(rootProject.getRootDir().getPath() + '/output')
-    }
-
-    publishing {
-        publications {
-            mavenJava(MavenPublication) {
-                artifact jar
-            }
-        }
-        repositories {
-            maven {
-                url "file://var/www/maven"
-            }
-        }
-    }
+    from(sourceSets.main.resources.srcDirs) { exclude '**/*.info' }
 }
 
-task copyBuildXml(type: Copy) {
-    from 'build.properties'
-    into 'output'
+version = "${version_minecraft}-${version_major}.${version_minor}.${version_revis}"
+
+jar {
+    from "build/sources/main"
+    destinationDir = file (rootProject.getRootDir().getPath() + '/output')
+    exclude('betterachievementsdemo/**')
 }
 
-task apiZip(type: Zip) {
-    classifier = 'api'
-    from sourceSets*.allSource
-    include 'wailafeatures/api/**'
-    destinationDir = file 'output'
+task deobfJar(type: Jar) {
+    from sourceSets.main.output
+    classifier = 'deobf'
+    destinationDir = file (rootProject.getRootDir().getPath() + '/output')
+}
+
+task sourcesJar(type: Jar, dependsOn: 'sourceMainJava') {
+    from "build/sources/java"
+    from "build/resources/main/java"
+    classifier "sources"
+    destinationDir = file (rootProject.getRootDir().getPath() + '/output')
 }
 
 artifacts {
-    archives apiZip
+    archives sourcesJar, deobfJar
 }
-
-build.dependsOn "apiZip", "copyBuildXml"
