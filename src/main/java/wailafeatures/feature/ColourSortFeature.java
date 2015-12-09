@@ -3,17 +3,19 @@ package wailafeatures.feature;
 import codechicken.nei.SearchField;
 import codechicken.nei.api.API;
 import codechicken.nei.api.ItemFilter;
-import cpw.mods.fml.relauncher.Side;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.ItemModelMesher;
+import net.minecraft.client.renderer.entity.RenderItem;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.IReloadableResourceManager;
 import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.client.resources.IResourceManagerReloadListener;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.relauncher.Side;
 import wailafeatures.config.Settings;
 import wailafeatures.reference.Colours;
 import wailafeatures.util.LogHelper;
@@ -95,13 +97,23 @@ public class ColourSortFeature implements IFeature, SearchField.ISearchProvider
         this.checkedItems.add(itemStack);
     }
 
+    private TextureAtlasSprite getIcon(Block block, int meta)
+    {
+        return Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getTexture(block.getStateFromMeta(meta));
+    }
+
+    private TextureAtlasSprite getIcon(ItemStack itemStack)
+    {
+        return Minecraft.getMinecraft().getRenderItem().getItemModelMesher().getItemModel(itemStack).getTexture();
+    }
+
     private Colour calcColour(Block block, int damage)
     {
         Set<String> iconNames = new LinkedHashSet<String>();
         // Get all block sides
         for (int i = 0; i < 6; i++)
         {
-            IIcon icon = block.getIcon(i, damage);
+            TextureAtlasSprite icon = getIcon(block, i);
             if (icon == null) continue;
             iconNames.add(icon.getIconName());
         }
@@ -139,43 +151,33 @@ public class ColourSortFeature implements IFeature, SearchField.ISearchProvider
         ResourceLocation resourceLocation;
         List<Integer> colours = new LinkedList<Integer>();
 
-        /*
-        Get all item Icons based on the render pass
-        when a pass has no icon skip it
-         */
-        for (int i = 0; item.getRenderPasses(damage) > i; i++)
+        TextureAtlasSprite icon = getIcon(itemStack);
+        /*// On the client side check the render colour of the itemstack
+        if (ColourSortFeature.this.side == Side.CLIENT)
         {
-            IIcon icon = item.getIconFromDamage(damage);
-            if (icon == null) continue;
-
-            // On the client side check the render colour of the itemstack
-            if (ColourSortFeature.this.side == Side.CLIENT)
+            int colour = item.getColorFromItemStack(itemStack, i);
+            // When the render colour is not the default take that as could and don't do pixel check
+            if (colour != 16777215)
             {
-                int colour = item.getColorFromItemStack(itemStack, i);
-                // When the render colour is not the default take that as could and don't do pixel check
-                if (colour != 16777215)
-                {
-                    colours.add(colour);
-                    break;
-                }
+                colours.add(colour);
             }
+        }*/
 
-            String name = icon.getIconName();
+        String name = icon.getIconName();
 
-            if (name.contains(":"))
-            {
-                String[] split = name.split(":");
-                resourceLocation = new ResourceLocation(split[0] + ":textures/items/" + split[1] + ".png");
-            } else
-                resourceLocation = new ResourceLocation("textures/items/" + name + ".png");
+        if (name.contains(":"))
+        {
+            String[] split = name.split(":");
+            resourceLocation = new ResourceLocation(split[0] + ":textures/items/" + split[1] + ".png");
+        } else
+            resourceLocation = new ResourceLocation("textures/items/" + name + ".png");
 
-            try
-            {
-                BufferedImage bufferedImage = ImageIO.read(Minecraft.getMinecraft().getResourceManager().getResource(resourceLocation).getInputStream());
+        try
+        {
+            BufferedImage bufferedImage = ImageIO.read(Minecraft.getMinecraft().getResourceManager().getResource(resourceLocation).getInputStream());
 
-                colours.add(getIntColour(bufferedImage));
-            } catch (IOException ignore) {}
-        }
+            colours.add(getIntColour(bufferedImage));
+        } catch (IOException ignore) {}
 
         if (colours.size() == 0) return Colour.black;
         return Colour.find(colours.size() > 1 ? Colours.blend(colours.toArray(new Integer[colours.size()])) : colours.get(0));

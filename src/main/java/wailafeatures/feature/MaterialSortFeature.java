@@ -3,7 +3,7 @@ package wailafeatures.feature;
 import codechicken.nei.SearchField;
 import codechicken.nei.api.API;
 import codechicken.nei.api.ItemFilter;
-import cpw.mods.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.Side;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.ItemBlock;

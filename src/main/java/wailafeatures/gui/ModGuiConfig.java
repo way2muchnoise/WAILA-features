@@ -1,6 +1,6 @@
 package wailafeatures.gui;
 
-import cpw.mods.fml.client.config.GuiConfig;
+import net.minecraftforge.fml.client.config.GuiConfig;
 import net.minecraft.client.gui.GuiScreen;
 import wailafeatures.config.ConfigHandler;
 import wailafeatures.reference.Reference;

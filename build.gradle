@@ -7,7 +7,7 @@ buildscript {
         }
     }
     dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:2.1-SNAPSHOT'
+        classpath 'net.minecraftforge.gradle:ForgeGradle:2.0-SNAPSHOT'
     }
 }
 apply plugin: 'net.minecraftforge.gradle.forge'
@@ -30,14 +30,13 @@ repositories {
         name 'FMP'
         artifactPattern "http://files.minecraftforge.net/[module]/[module]-dev-[revision].[ext]"
     }
-
 }
 
 dependencies {
     compile "codechicken:NotEnoughItems:${version_minecraft}-${version_nei}:dev"
     compile "codechicken:CodeChickenLib:${version_minecraft}-${version_cclib}:dev"
     compile "codechicken:CodeChickenCore:${version_minecraft}-${version_cccore}:dev"
-    compile "mcp.mobius.waila:Waila:${waila_version}_${version_minecraft}:dev"
+    compile "mcp.mobius.waila:Waila:${waila_version}:dev"
 
     compile fileTree(dir: 'lib', include: '*.jar')
 }

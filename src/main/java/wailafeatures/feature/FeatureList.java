@@ -1,6 +1,6 @@
 package wailafeatures.feature;
 
-import cpw.mods.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.Side;
 
 public enum FeatureList
 {
