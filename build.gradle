@@ -26,16 +26,12 @@ repositories {
         name "Waila Mobius Repo"
         url "http://mobiusstrip.eu/maven"
     }
-    ivy {
-        name 'FMP'
-        artifactPattern "http://files.minecraftforge.net/[module]/[module]-dev-[revision].[ext]"
-    }
 }
 
 dependencies {
-    compile "codechicken:NotEnoughItems:${version_minecraft}-${version_nei}:dev"
     compile "codechicken:CodeChickenLib:${version_minecraft}-${version_cclib}:dev"
     compile "codechicken:CodeChickenCore:${version_minecraft}-${version_cccore}:dev"
+    compile "codechicken:NotEnoughItems:${version_minecraft}-${version_nei}:dev"
     compile "mcp.mobius.waila:Waila:${waila_version}:dev"
 
     compile fileTree(dir: 'lib', include: '*.jar')

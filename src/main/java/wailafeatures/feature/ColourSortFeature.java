@@ -5,8 +5,6 @@ import codechicken.nei.api.API;
 import codechicken.nei.api.ItemFilter;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.ItemModelMesher;
-import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.IReloadableResourceManager;
 import net.minecraft.client.resources.IResourceManager;
@@ -30,14 +28,14 @@ public class ColourSortFeature implements IFeature, SearchField.ISearchProvider
 {
     private Map<Colour, List<ItemStack>> colourMap;
     private List<ItemStack> checkedItems;
-    private Side side;
+    // private Side side;
 
     @Override
     public void registerFeature(Side side)
     {
         LogHelper.debugInfo("Registering ColourFilter");
         API.addSearchProvider(this);
-        this.side = side;
+        // this.side = side;
         if (side == Side.CLIENT)
             ((IReloadableResourceManager)Minecraft.getMinecraft().getResourceManager()).registerReloadListener(new TextureReloadListener());
     }
@@ -99,12 +97,12 @@ public class ColourSortFeature implements IFeature, SearchField.ISearchProvider
 
     private TextureAtlasSprite getIcon(Block block, int meta)
     {
-        return Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getTexture(block.getStateFromMeta(meta));
+        return Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getTexture(block.getDefaultState());
     }
 
     private TextureAtlasSprite getIcon(ItemStack itemStack)
     {
-        return Minecraft.getMinecraft().getRenderItem().getItemModelMesher().getItemModel(itemStack).getTexture();
+        return Minecraft.getMinecraft().getRenderItem().getItemModelMesher().getParticleIcon(itemStack.getItem(), itemStack.getItemDamage());
     }
 
     private Colour calcColour(Block block, int damage)
@@ -152,6 +150,7 @@ public class ColourSortFeature implements IFeature, SearchField.ISearchProvider
         List<Integer> colours = new LinkedList<Integer>();
 
         TextureAtlasSprite icon = getIcon(itemStack);
+        if(icon == null) return Colour.black;
         /*// On the client side check the render colour of the itemstack
         if (ColourSortFeature.this.side == Side.CLIENT)
         {
