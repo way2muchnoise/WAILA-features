@@ -28,14 +28,14 @@ public class ColourSortFeature implements IFeature, SearchField.ISearchProvider
 {
     private Map<Colour, List<ItemStack>> colourMap;
     private List<ItemStack> checkedItems;
-    // private Side side;
+    private Side side;
 
     @Override
     public void registerFeature(Side side)
     {
         LogHelper.debugInfo("Registering ColourFilter");
         API.addSearchProvider(this);
-        // this.side = side;
+        this.side = side;
         if (side == Side.CLIENT)
             ((IReloadableResourceManager)Minecraft.getMinecraft().getResourceManager()).registerReloadListener(new TextureReloadListener());
     }
@@ -97,51 +97,39 @@ public class ColourSortFeature implements IFeature, SearchField.ISearchProvider
 
     private TextureAtlasSprite getIcon(Block block, int meta)
     {
-        return Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getTexture(block.getDefaultState());
+        return Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getTexture(block.getStateFromMeta(meta));
     }
 
     private TextureAtlasSprite getIcon(ItemStack itemStack)
     {
-        return Minecraft.getMinecraft().getRenderItem().getItemModelMesher().getParticleIcon(itemStack.getItem(), itemStack.getItemDamage());
+        return Minecraft.getMinecraft().getRenderItem().getItemModelMesher().getItemModel(itemStack).getTexture();
     }
 
-    private Colour calcColour(Block block, int damage)
+    private Colour calcColour(Block block, int meta)
     {
-        Set<String> iconNames = new LinkedHashSet<String>();
-        // Get all block sides
-        for (int i = 0; i < 6; i++)
+        TextureAtlasSprite icon = getIcon(block, meta);
+        if (icon == null) return Colour.black;
+
+        String name = icon.getIconName();
+        ResourceLocation resourceLocation;
+
+        if (name.contains(":"))
         {
-            TextureAtlasSprite icon = getIcon(block, i);
-            if (icon == null) continue;
-            iconNames.add(icon.getIconName());
-        }
+            String[] split = name.split(":");
+            resourceLocation = new ResourceLocation(split[0] + ":textures/" + split[1] + ".png");
+        } else
+            resourceLocation = new ResourceLocation("textures/" + name + ".png");
 
-        List<Integer> colours = new LinkedList<Integer>();
-
-        for (String name : iconNames)
+        int iColour = -1;
+        try
         {
-            ResourceLocation resourceLocation;
+            BufferedImage bufferedImage = ImageIO.read(Minecraft.getMinecraft().getResourceManager().getResource(resourceLocation).getInputStream());
+            if (bufferedImage == null) return Colour.black;
+            iColour = getIntColour(bufferedImage);
+        } catch (IOException ignore) {}
 
-            if (name.contains(":"))
-            {
-                String[] split = name.split(":");
-                resourceLocation = new ResourceLocation(split[0] + ":textures/blocks/" + split[1] + ".png");
-            } else
-                resourceLocation = new ResourceLocation("textures/blocks/" + name + ".png");
-
-            try
-            {
-                BufferedImage bufferedImage = ImageIO.read(Minecraft.getMinecraft().getResourceManager().getResource(resourceLocation).getInputStream());
-
-                if (bufferedImage == null)
-                    continue;
-
-                colours.add(getIntColour(bufferedImage));
-            } catch (IOException ignore) {}
-        }
-
-        if (colours.size() == 0) return Colour.black;
-        return Colour.find(colours.size() > 1 ? Colours.blend(colours.toArray(new Integer[colours.size()])) : colours.get(0));
+        if (iColour == -1) return Colour.black;
+        return Colour.find(iColour);
     }
 
     private Colour calcColour(ItemStack itemStack, Item item, int damage)
@@ -151,25 +139,23 @@ public class ColourSortFeature implements IFeature, SearchField.ISearchProvider
 
         TextureAtlasSprite icon = getIcon(itemStack);
         if(icon == null) return Colour.black;
-        /*// On the client side check the render colour of the itemstack
+        // On the client side check the render colour of the ItemStack
         if (ColourSortFeature.this.side == Side.CLIENT)
         {
-            int colour = item.getColorFromItemStack(itemStack, i);
+            int colour = item.getColorFromItemStack(itemStack, 1);
             // When the render colour is not the default take that as could and don't do pixel check
             if (colour != 16777215)
-            {
                 colours.add(colour);
-            }
-        }*/
+        }
 
         String name = icon.getIconName();
 
         if (name.contains(":"))
         {
             String[] split = name.split(":");
-            resourceLocation = new ResourceLocation(split[0] + ":textures/items/" + split[1] + ".png");
+            resourceLocation = new ResourceLocation(split[0] + ":textures/" + split[1] + ".png");
         } else
-            resourceLocation = new ResourceLocation("textures/items/" + name + ".png");
+            resourceLocation = new ResourceLocation("textures/" + name + ".png");
 
         try
         {
