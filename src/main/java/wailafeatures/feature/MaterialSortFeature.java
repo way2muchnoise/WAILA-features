@@ -1,8 +1,5 @@
 package wailafeatures.feature;
 
-import codechicken.nei.SearchField;
-import codechicken.nei.api.API;
-import codechicken.nei.api.ItemFilter;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -11,16 +8,16 @@ import net.minecraft.item.ItemStack;
 import wailafeatures.config.Settings;
 import wailafeatures.util.LogHelper;
 
-public class MaterialSortFeature implements IFeature, SearchField.ISearchProvider
+public class MaterialSortFeature implements IFeature//, SearchField.ISearchProvider
 {
     @Override
     public void registerFeature(Side side)
     {
         LogHelper.debugInfo("Registering MaterialFilter");
-        API.addSearchProvider(this);
+        //API.addSearchProvider(this);
     }
 
-    @Override
+    /*@Override
     public boolean isPrimary()
     {
         return false;
@@ -58,7 +55,7 @@ public class MaterialSortFeature implements IFeature, SearchField.ISearchProvide
                 return Block.getBlockFromItem(item.getItem()).getMaterial() == material.material;
             return false;
         }
-    }
+    }*/
     
     public enum MaterialEnum
     {

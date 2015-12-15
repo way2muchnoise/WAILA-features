@@ -1,8 +1,5 @@
 package wailafeatures.feature;
 
-import codechicken.nei.SearchField;
-import codechicken.nei.api.API;
-import codechicken.nei.api.ItemFilter;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -14,7 +11,6 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
-import wailafeatures.config.Settings;
 import wailafeatures.reference.Colours;
 import wailafeatures.util.LogHelper;
 import wailafeatures.util.Tuple;
@@ -24,7 +20,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.*;
 
-public class ColourSortFeature implements IFeature, SearchField.ISearchProvider
+public class ColourSortFeature implements IFeature//, SearchField.ISearchProvider
 {
     private Map<Colour, List<ItemStack>> colourMap;
     private List<ItemStack> checkedItems;
@@ -34,7 +30,7 @@ public class ColourSortFeature implements IFeature, SearchField.ISearchProvider
     public void registerFeature(Side side)
     {
         LogHelper.debugInfo("Registering ColourFilter");
-        API.addSearchProvider(this);
+        // API.addSearchProvider(this);
         this.side = side;
         if (side == Side.CLIENT)
             ((IReloadableResourceManager)Minecraft.getMinecraft().getResourceManager()).registerReloadListener(new TextureReloadListener());
@@ -56,7 +52,7 @@ public class ColourSortFeature implements IFeature, SearchField.ISearchProvider
         this.checkedItems = new LinkedList<ItemStack>();
     }
 
-    @Override
+    /*@Override
     public boolean isPrimary()
     {
         return Settings.debugMode;
@@ -74,7 +70,7 @@ public class ColourSortFeature implements IFeature, SearchField.ISearchProvider
                 return null;
         }
         return Settings.fuzzyColourMode ? new FuzzyColourFilter(searchText) : new ColourFilter(searchText);
-    }
+    }*/
 
     public void checkItem(ItemStack itemStack)
     {
@@ -247,7 +243,7 @@ public class ColourSortFeature implements IFeature, SearchField.ISearchProvider
         return dom;
     }
 
-    public class ColourFilter implements ItemFilter
+    /*public class ColourFilter implements ItemFilter
     {
         private Colour colour;
 
@@ -265,9 +261,9 @@ public class ColourSortFeature implements IFeature, SearchField.ISearchProvider
             List<ItemStack> list = ColourSortFeature.this.colourMap.get(colour);
             return list != null && list.contains(itemStack);
         }
-    }
+    }*/
 
-    public class FuzzyColourFilter extends ColourFilter
+    /*public class FuzzyColourFilter extends ColourFilter
     {
         private FuzzyColour fuzzyColour;
 
@@ -290,7 +286,7 @@ public class ColourSortFeature implements IFeature, SearchField.ISearchProvider
                     list.addAll(ColourSortFeature.this.colourMap.get(colour));
             return list.contains(itemStack);
         }
-    }
+    }*/
 
     public enum FuzzyColour
     {

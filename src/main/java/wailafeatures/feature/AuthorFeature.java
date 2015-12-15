@@ -1,18 +1,16 @@
 package wailafeatures.feature;
 
-import codechicken.nei.guihook.GuiContainerManager;
-import codechicken.nei.guihook.IContainerTooltipHandler;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.util.BlockPos;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import mcp.mobius.waila.api.*;
 import mcp.mobius.waila.api.impl.ModuleRegistrar;
 import net.minecraft.block.Block;
-import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
 import org.lwjgl.input.Keyboard;
 import wailafeatures.config.Settings;
 import wailafeatures.util.AuthorIdent;
@@ -21,14 +19,14 @@ import wailafeatures.util.TranslationHelper;
 
 import java.util.List;
 
-public class AuthorFeature implements IFeature, IContainerTooltipHandler, IWailaDataProvider, IWailaEntityProvider
+public class AuthorFeature implements IFeature, /*IContainerTooltipHandler,*/ IWailaDataProvider, IWailaEntityProvider
 {
     @Override
     public void registerFeature(Side side)
     {
         LogHelper.debugInfo("Registering AuthorInfo");
         AuthorIdent.init();
-        GuiContainerManager.addTooltipHandler(this);
+        //GuiContainerManager.addTooltipHandler(this);
         ModuleRegistrar.instance().registerTailProvider((IWailaDataProvider) this, Block.class);
         ModuleRegistrar.instance().registerTailProvider((IWailaEntityProvider) this, Entity.class);
     }
@@ -56,52 +54,35 @@ public class AuthorFeature implements IFeature, IContainerTooltipHandler, IWaila
     }
 
     @Override
-    public List<String> handleTooltip(GuiContainer guiContainer, int i, int i1, List<String> currenttip)
-    {
-        return currenttip;
-    }
-
-    @Override
-    public List<String> handleItemDisplayName(GuiContainer guiContainer, ItemStack itemStack, List<String> currenttip)
-    {
-        return currenttip;
-    }
-
-    @Override
-    public List<String> handleItemTooltip(GuiContainer guiContainer, ItemStack itemStack, int i, int i1, List<String> currenttip)
-    {
-        return addModAuthors(itemStack, currenttip);
-    }
-
-    @Override
     public ItemStack getWailaStack(IWailaDataAccessor accessor, IWailaConfigHandler config)
     {
         return null;
     }
 
     @Override
-    public ITaggedList.ITipList getWailaHead(ItemStack itemStack, ITaggedList.ITipList currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config)
+    public List<String> getWailaHead(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config)
     {
         return currenttip;
     }
 
     @Override
-    public ITaggedList.ITipList getWailaBody(ItemStack itemStack, ITaggedList.ITipList currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config)
+    public List<String> getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config)
     {
         return currenttip;
     }
 
     @Override
-    public ITaggedList.ITipList getWailaTail(ItemStack itemStack, ITaggedList.ITipList currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config)
+    public List<String> getWailaTail(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config)
     {
         return addModAuthors(itemStack, currenttip);
     }
 
     @Override
-    public NBTTagCompound getNBTData(TileEntity te, NBTTagCompound tag, IWailaDataAccessorServer accessor)
+    public NBTTagCompound getNBTData(EntityPlayerMP player, TileEntity te, NBTTagCompound tag, World world, BlockPos pos)
     {
         return tag;
     }
+
 
     @Override
     public Entity getWailaOverride(IWailaEntityAccessor accessor, IWailaConfigHandler config)
@@ -110,25 +91,25 @@ public class AuthorFeature implements IFeature, IContainerTooltipHandler, IWaila
     }
 
     @Override
-    public ITaggedList.ITipList getWailaHead(Entity entity, ITaggedList.ITipList currenttip, IWailaEntityAccessor accessor, IWailaConfigHandler config)
+    public List<String> getWailaHead(Entity entity, List<String> currenttip, IWailaEntityAccessor accessor, IWailaConfigHandler config)
     {
         return currenttip;
     }
 
     @Override
-    public ITaggedList.ITipList getWailaBody(Entity entity, ITaggedList.ITipList currenttip, IWailaEntityAccessor accessor, IWailaConfigHandler config)
+    public List<String> getWailaBody(Entity entity, List<String> currenttip, IWailaEntityAccessor accessor, IWailaConfigHandler config)
     {
         return currenttip;
     }
 
     @Override
-    public ITaggedList.ITipList getWailaTail(Entity entity, ITaggedList.ITipList currenttip, IWailaEntityAccessor accessor, IWailaConfigHandler config)
+    public List<String> getWailaTail(Entity entity, List<String> currenttip, IWailaEntityAccessor accessor, IWailaConfigHandler config)
     {
         return addModAuthors(entity, currenttip);
     }
 
     @Override
-    public NBTTagCompound getNBTData(Entity ent, NBTTagCompound tag, IWailaEntityAccessorServer accessor)
+    public NBTTagCompound getNBTData(EntityPlayerMP player, Entity ent, NBTTagCompound tag, World world)
     {
         return tag;
     }
