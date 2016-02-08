@@ -29,7 +29,7 @@ repositories {
 
 dependencies {
     deobfCompile "mezz.jei:jei_${version_minecraft}:${version_jei}"
-    compile "mcp.mobius.waila:Waila:${version_waila}_${version_minecraft}:dev"
+    deobfCompile "mcp.mobius.waila:Waila:${version_waila}"
     compile fileTree(dir: 'lib', include: '*.jar')
 }
 
