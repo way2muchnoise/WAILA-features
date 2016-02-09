@@ -14,9 +14,6 @@ import wailafeatures.reference.Reference;
 @Mod(modid = Reference.ID, name = Reference.NAME, version = Reference.VERSION_FULL, guiFactory = Reference.GUI_FACTORY, dependencies = "after:JEI@[2.23.0,);after:Waila")
 public class WailaFeatures
 {
-    @Mod.Instance(value = Reference.ID)
-    public static WailaFeatures INSTANCE;
-
     @Mod.Metadata(Reference.ID)
     public static ModMetadata metadata;
 
@@ -29,16 +26,6 @@ public class WailaFeatures
         metadata = MetaData.init(metadata);
         ConfigHandler.init(event.getSuggestedConfigurationFile());
         MinecraftForge.EVENT_BUS.register(new ConfigHandler());
-    }
-
-    @Mod.EventHandler
-    public void init(FMLInitializationEvent event)
-    {
-    }
-
-    @Mod.EventHandler
-    public void postInit(FMLPostInitializationEvent event)
-    {
     }
 
     @Mod.EventHandler

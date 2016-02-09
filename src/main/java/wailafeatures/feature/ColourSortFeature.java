@@ -98,7 +98,7 @@ public class ColourSortFeature implements IFeature//, SearchField.ISearchProvide
 
     private TextureAtlasSprite getIcon(ItemStack itemStack)
     {
-        return Minecraft.getMinecraft().getRenderItem().getItemModelMesher().getItemModel(itemStack).getTexture();
+        return Minecraft.getMinecraft().getRenderItem().getItemModelMesher().getItemModel(itemStack).getParticleTexture();
     }
 
     private Colour calcColour(Block block, int meta)
