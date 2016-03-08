@@ -19,14 +19,13 @@ import wailafeatures.util.TranslationHelper;
 
 import java.util.List;
 
-public class AuthorFeature implements IFeature, /*IContainerTooltipHandler,*/ IWailaDataProvider, IWailaEntityProvider
+public class AuthorFeature implements IFeature, IWailaDataProvider, IWailaEntityProvider
 {
     @Override
     public void registerFeature(Side side)
     {
         LogHelper.debugInfo("Registering AuthorInfo");
         AuthorIdent.init();
-        //GuiContainerManager.addTooltipHandler(this);
         ModuleRegistrar.instance().registerTailProvider((IWailaDataProvider) this, Block.class);
         ModuleRegistrar.instance().registerTailProvider((IWailaEntityProvider) this, Entity.class);
     }

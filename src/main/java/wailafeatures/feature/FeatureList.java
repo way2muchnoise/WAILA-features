@@ -4,9 +4,7 @@ import net.minecraftforge.fml.relauncher.Side;
 
 public enum FeatureList
 {
-    author(new AuthorFeature()),
-    colourSort(new ColourSortFeature()),
-    materialSort(new MaterialSortFeature());
+    author(new AuthorFeature());
 
     private IFeature feature;
 
