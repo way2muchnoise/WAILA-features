@@ -11,7 +11,7 @@ import wailafeatures.proxy.CommonProxy;
 import wailafeatures.reference.MetaData;
 import wailafeatures.reference.Reference;
 
-@Mod(modid = Reference.ID, name = Reference.NAME, version = Reference.VERSION_FULL, guiFactory = Reference.GUI_FACTORY, dependencies = "after:JEI@[2.23.0,);after:Waila")
+@Mod(modid = Reference.ID, name = Reference.NAME, version = Reference.VERSION_FULL, guiFactory = Reference.GUI_FACTORY, dependencies = "after:Waila")
 public class WailaFeatures
 {
     @Mod.Metadata(Reference.ID)
