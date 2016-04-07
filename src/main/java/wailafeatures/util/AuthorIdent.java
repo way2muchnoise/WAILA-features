@@ -16,16 +16,14 @@ public class AuthorIdent
 
     public static void init()
     {
-        for (ModContainer mod : Loader.instance().getModList()){
-            authorMap.put(mod.getModId(), mod.getMetadata().getAuthorList());
-        }
-
+        for (ModContainer mod : Loader.instance().getModList())
+            authorMap.put(mod.getModId().toLowerCase(), mod.getMetadata().getAuthorList());
         authorMap.put("minecraft", "Mojang");
     }
 
     public static String nameFromItem(Item item)
     {
-        String author = authorMap.get(GameRegistry.findUniqueIdentifierFor(item).modId);
+        String author = authorMap.get(item.getRegistryName().getResourceDomain().toLowerCase());
         return author == null ? "<Unknown>" : author;
     }
 
