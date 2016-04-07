@@ -2,8 +2,8 @@ buildscript {
     repositories {
         jcenter()
         maven {
-            name = "forge"
-            url = "http://files.minecraftforge.net/maven"
+            name "forge"
+            url "http://files.minecraftforge.net/maven"
         }
     }
     dependencies {
@@ -15,8 +15,8 @@ apply plugin: 'idea'
 
 repositories {
     maven {
-        name = "forge"
-        url = "http://files.minecraftforge.net/maven"
+        name "forge"
+        url "http://files.minecraftforge.net/maven"
     }
     maven {
         name "Waila Mobius Repo"
@@ -29,15 +29,21 @@ repositories {
 
 dependencies {
     deobfCompile "mezz.jei:jei_${version_minecraft}:${version_jei}"
-    deobfCompile "mcp.mobius.waila:Waila:${version_waila}"
-    compile fileTree(dir: 'lib', include: '*.jar')
+    deobfCompile "mcp.mobius.waila:Waila:${version_waila}_${version_minecraft}"
 }
 
 group = "wailafeatures"
-archivesBaseName = "WAILA-features"
+archivesBaseName = "WAILA-features-" + version_minecraft
 
 sourceCompatibility = 1.7
 targetCompatibility = 1.7
+
+version = version_major + '.' + version_minor + '.' + version_revis
+
+//adds the build number to the end of the version string if on a build server
+if (System.getenv().DRONE_BUILD_NUMBER != null) {
+    version += ".${System.getenv().DRONE_BUILD_NUMBER}"
+}
 
 minecraft {
     version = "${version_minecraft}-${version_forge}"
@@ -46,9 +52,7 @@ minecraft {
 
     useDepAts = true
 
-    replace "@MAJOR@", version_major
-    replace "@MINOR@", version_minor
-    replace "@REVIS@", version_revis
+    replace "@VERSION@", project.version
 
     replaceIn "reference/Reference.java"
     replaceIn "package-info.java"
@@ -68,8 +72,6 @@ processResources {
     // Move access transformers to META-INF
     rename '(.+_at.cfg)', 'META-INF/$1'
 }
-
-version = "${version_minecraft}-${version_major}.${version_minor}.${version_revis}"
 
 task deobfJar(type: Jar) {
     from sourceSets.main.output
