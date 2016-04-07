@@ -25,9 +25,6 @@
 /nbproject/private/
 /nbbuild/
 output/
-gradlew
-gradlew.bat
-gradle/
 install.bat
 .cache
 build.xml
