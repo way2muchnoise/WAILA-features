@@ -1,22 +1,7 @@
 wailafeatures.config.debug.title=Debug Mode
 wailafeatures.config.debug.description=Run the mod in debug mode
 
-wailafeatures.config.fuzzyColour.title=Fuzzy Colour Mode
-wailafeatures.config.fuzzyColour.description=Run colour search with less specific values
-
-wailafeatures.config.colourPrefix.title=Activate the colour prefix
-wailafeatures.config.colourPrefix.description=Prepend the search with "@colour:" to enable the colour search
-
-wailafeatures.config.materialPrefix.title=Activate the material prefix
-wailafeatures.config.materialPrefix.description=Prepend the search with "@material:" to enable the material search
-
 wailafeatures.config.authorIdent.title=Activate Mod Author Identification
 wailafeatures.config.authorIdent.description=Display mod author while holding shift
-
-wailafeatures.config.colourSearch.title=Activate Colour Search
-wailafeatures.config.colourSearch.description=Find items by colour in NEI
-
-wailafeatures.config.materialSearch.title=Activate Material Search
-wailafeatures.config.materialSearch.description=Find items by material in NEI
 
 wailafeatures.author.madeBy=Made by
