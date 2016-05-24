@@ -7,7 +7,7 @@ Each feature can be disable by config.
 ### Author listing
 Hold shift to see the author(s) of the mod. Works in an inventory as well in the WAILA tooltip.
 
-### Colour NEI filter
+### Colour NEI filter (only in 1.7.10 version)
 Search for blocks and items by their colour. Can be set to have a prefix.
 
 #####Colour (part of Fuzzy)
@@ -30,7 +30,7 @@ Search for blocks and items by their colour. Can be set to have a prefix.
 * gray
 * lightGray (gray)
 
-### Material NEI filter
+### Material NEI filter (only in 1.7.10 version)
 Search for blocks by their material. Can be set to have a prefix.
 
 ####Materials
