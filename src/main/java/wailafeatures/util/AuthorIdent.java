@@ -3,7 +3,6 @@ package wailafeatures.util;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.ModContainer;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
 
@@ -12,12 +11,13 @@ import java.util.Map;
 
 public class AuthorIdent
 {
-    private static Map<String, String> authorMap = new HashMap<String, String>();
+    private static Map<String, String> authorMap = new HashMap<>();
 
     public static void init()
     {
         for (ModContainer mod : Loader.instance().getModList())
-            authorMap.put(mod.getModId().toLowerCase(), mod.getMetadata().getAuthorList());
+            if (mod!= null && mod.getModId() != null && mod.getMetadata() != null)
+                authorMap.put(mod.getModId().toLowerCase(), mod.getMetadata().getAuthorList());
         authorMap.put("minecraft", "Mojang");
     }
 
