@@ -33,8 +33,9 @@ repositories {
 }
 
 dependencies {
-    deobfCompile "mezz.jei:jei_${version_minecraft}:${version_jei}"
-    deobfCompile "mcp.mobius.waila:Waila:${version_waila}_${version_minecraft}"
+    deobfCompile "mezz.jei:jei_${version_minecraft}:${version_jei}:api"
+    runtime "mezz.jei:jei_${version_minecraft}:${version_jei}"
+    deobfCompile "mcp.mobius.waila:Waila:${version_waila}"
 }
 
 group = "wailafeatures"
