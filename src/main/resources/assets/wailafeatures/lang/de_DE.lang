@@ -1,0 +1,7 @@
+wailafeatures.config.debug.title=Debug-Modus
+wailafeatures.config.debug.description=Die Modifikation im Debug-Modus starten
+
+wailafeatures.config.authorIdent.title=Modersteller-Identifizierung aktivieren
+wailafeatures.config.authorIdent.description=Modersteller anzeigen, wenn Shift gedrückt wird
+
+wailafeatures.author.madeBy=Erstellt von
